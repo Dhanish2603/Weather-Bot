@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    hello guys here is the data of all chat members 
+    <% data.forEach((user)=>{ %>
+        <form action="/admin/delete/<%= user.chatid%>" method="post">
+         <%= user.chatid%> 
+        <button type="submit">Delete</button>
+      </form>
+     
+    <% }); %>
+  </body>
+  <!-- <script>
+    const TelegramBot = require("node-telegram-bot-api");
+    const token = process.env.TELE_API;
+    const bot = new TelegramBot(token, { polling: true });
+
+    function handleDelete(chatid) {
+        console.log("running")
+
+    //   bot.onText(/\/blockuser/, (msg) => {
+    //     const chatId = msg.chat.id;
+    //     const userId = msg.from.id;
+
+    //     // Mute the user for the chat
+    //     bot.restrictChatMember(chatId, userId, { can_send_messages: false });
+    //   });
+    }
+  </script> -->
+</html>
