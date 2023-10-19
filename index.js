@@ -13,8 +13,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 app.get("/admin", async (req, res) => {
-  // Fetch user data from your database (e.g., MongoDB)
-  const data = await user.find(); // Modify this to match your database schema
+  const data = await user.find();
   if (data == null) {
     return;
   }
@@ -23,19 +22,10 @@ app.get("/admin", async (req, res) => {
 
 app.post("/admin/delete/:userId", (req, res) => {
   const userId = req.params.userId;
-  // console.log(userId);
-
-  bot.onText(/\/banuser/, (msg) => {
-     
-
-    // Ban the user from the chat
-    bot.kickChatMember(userId, userId);
-});
-
-  // Delete the user from your database (e.g., MongoDB)
-  user.findOneAndDelete({ chatid: userId }).then((err) => {
+  user.findOneAndUpdate({ chatid: userId }, { block: true }).then((err) => {
     if (err) {
       console.error(err);
+      console.log(err);
       res.redirect("/admin");
     } else {
       res.redirect("/admin");
@@ -53,20 +43,49 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
   bot.sendMessage(chatId, resp);
 });
 
+// bot.onText(/\/block/, (msg) => {
+//   const chatId = msg.chat.id;
+//   const userId = msg.from.id;
+//   //  user.findOne({ chatid: chatId }).then((existUser =>{
+//     //  console.log("working", existUser.block)
+//     bot.restrictChatMember(chatId, userId, {
+//       can_send_messages: false,
+//       can_send_media_messages: false,
+//       can_send_other_messages: false,
+//       can_add_web_page_previews: false
+//   });
+
+//   //  }))
+//     // if(data.block){
+//     // }
+//   // Ban the user from the chat
+// });
+
 bot.on("message", async (msg) => {
-  // console.log(msg);
   const chatId = msg.chat.id;
   const userInput = msg.text;
+  const fromid = msg.from.id;
+  const firstname = msg.from.first_name;
+  const lastname = msg.from.last_name;
 
   try {
-    await user.findOne({ chatid: chatId }).then((existUser) => {
-      if (existUser) {
-        // console.log("user is ", existUser);
-      } else {
-        const createUser = user.create({ chatid: chatId });
-        // console.log(createUser);
-      }
-    });
+    const detail = await user.findOne({ chatid: chatId });
+    console.log(detail);
+
+    if (!detail) {
+      const createUser = await user.create({
+        chatid: chatId,
+        firstname,
+        lastname,
+        fromid,
+        block: false,
+      });
+    }
+
+    if (detail.block == true) {
+      bot.sendMessage(chatId, "You are blocked cant get any updates now");
+      return;
+    }
 
     const response = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?q=${userInput}&appid=b46a526fc6cbc20c83b1b09defa28e89`

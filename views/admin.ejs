@@ -4,15 +4,50 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      body {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      table {
+        padding: 10px;
+        border: none;
+      }
+      th {
+        padding: 10px;
+      }
+      tr {
+        padding: 10px;
+        border: 2px solid black;
+      }
+      td {
+        padding: 10px;
+      }
+    </style>
   </head>
   <body>
-    hello guys here is the data of all chat members 
+    <h1>Welcome to Admin Panel</h1>
     <% data.forEach((user)=>{ %>
-        <form action="/admin/delete/<%= user.chatid%>" method="post">
-         <%= user.chatid%> 
-        <button type="submit">Delete</button>
-      </form>
-     
+    <form action="/admin/delete/<%= user.chatid%>" method="post">
+      <table border="2">
+        <tr>
+          <th>ChatId</th>
+          <th>Name</th>
+          <th>Delete</th>
+        </tr>
+        <tr>
+          <td><%= user.chatid%></td>
+          <td><%= user.firstname +" "+ user.lastname%></td>
+          <td>
+            <button type="submit">Delete</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+
     <% }); %>
   </body>
   <!-- <script>
