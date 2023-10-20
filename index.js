@@ -43,23 +43,7 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
   bot.sendMessage(chatId, resp);
 });
 
-// bot.onText(/\/block/, (msg) => {
-//   const chatId = msg.chat.id;
-//   const userId = msg.from.id;
-//   //  user.findOne({ chatid: chatId }).then((existUser =>{
-//     //  console.log("working", existUser.block)
-//     bot.restrictChatMember(chatId, userId, {
-//       can_send_messages: false,
-//       can_send_media_messages: false,
-//       can_send_other_messages: false,
-//       can_add_web_page_previews: false
-//   });
-
-//   //  }))
-//     // if(data.block){
-//     // }
-//   // Ban the user from the chat
-// });
+ 
 
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
@@ -88,7 +72,7 @@ bot.on("message", async (msg) => {
     }
 
     const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${userInput}&appid=b46a526fc6cbc20c83b1b09defa28e89`
+      `https://api.openweathermap.org/data/2.5/weather?q=${userInput}&appid=${process.env.WEATHER_API}`
     );
     const data = response.data;
     const weather = data.weather[0].description;
