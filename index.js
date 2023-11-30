@@ -10,7 +10,7 @@ const user = require("./model/Schema");
 
 app.set("view engine", "ejs");
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Welcome to Weather Bot!");
 });
 app.get("/admin", async (req, res) => {
   const data = await user.find();
